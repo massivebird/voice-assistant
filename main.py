@@ -2,6 +2,8 @@ import pyttsx3
 import speech_recognition as sr
 import webbrowser
 import os
+import random
+from pathlib import Path
 
 # https://medium.com/analytics-vidhya/a-guide-to-your-own-a-i-voice-assistant-using-python-17f79c94704
 
@@ -9,7 +11,7 @@ engine = pyttsx3.init("sapi5")
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)  # 0-male voice , 1-female voice
 
-def takeCommand():
+def take_command():
     #It takes microphone input from the user and returns string output    
     r = sr.Recognizer()
     while True:
@@ -36,9 +38,30 @@ def cut_off_at(needle, haystack):
     needle_loc = haystack.find(needle)
     return haystack[needle_loc + needle_len + 1:]
 
+def play_artist(artist):
+    music_dir = Path("D:\music")
+    artist_dir = music_dir / artist
+
+    # Compile list of albums.
+    albums = [x for x in artist_dir.iterdir()]
+    
+    # Compile list of songs.
+    songs = []
+    for album in albums:
+        for f in album.iterdir():
+            if str(f).endswith(".mp3"):
+                songs.append(f)
+    
+    # Select a random song.
+    choice = random.choice(songs)
+
+    # Play the song.
+    os.startfile(choice)
+
+
 if __name__=="__main__" :
     while True:
-        query = takeCommand().lower()
+        query = take_command().lower()
         print(f"User said: {query}\n")  #User query will be printed.
 
         if "computer" not in query:
@@ -59,5 +82,7 @@ if __name__=="__main__" :
             webbrowser.open("https://github.com")
 
         if "play animal collective" in query:
-            codePath = "D:\music\Animal Collective\Meeting Of The Waters\\02 - Animal Collective - Man Of Oil.mp3"
-            os.startfile(codePath)
+            play_artist("Animal Collective")
+
+        if "play blur" in query:
+            play_artist("Blur")
