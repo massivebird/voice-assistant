@@ -11,22 +11,26 @@ engine = pyttsx3.init("sapi5")
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)  # 0-male voice , 1-female voice
 
+# Listen for voice activity. Return spoken words as a string.
 def take_command():
-    #It takes microphone input from the user and returns string output    
     r = sr.Recognizer()
+
     while True:
         with sr.Microphone() as source:
             print("Listening...")
             r.pause_threshold = 1
             audio = r.listen(source)
+
             try:
                 print("Recognizing...")    
                 query = r.recognize_google(audio, language='en-in')
             except Exception as e:
-                print("Nothing said.")
+                print("Nothing said. Trying again.")
                 continue
+
             return query
 
+# The AI speaks some words.
 def speak(words):
     engine.say(words)
     engine.runAndWait()
