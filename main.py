@@ -38,6 +38,7 @@ def cut_off_at(needle, haystack):
     needle_loc = haystack.find(needle)
     return haystack[needle_loc + needle_len + 1:]
 
+# Plays a random song by an artist.
 def play_artist(artist):
     music_dir = Path("D:\music")
     artist_dir = music_dir / artist
