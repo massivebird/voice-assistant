@@ -1,6 +1,7 @@
 import pyttsx3
 import speech_recognition as sr
 import webbrowser
+import os
 
 # https://medium.com/analytics-vidhya/a-guide-to-your-own-a-i-voice-assistant-using-python-17f79c94704
 
@@ -56,3 +57,7 @@ if __name__=="__main__" :
 
         if "open github" in query:
             webbrowser.open("https://github.com")
+
+        if "play animal collective" in query:
+            codePath = "D:\music\Animal Collective\Meeting Of The Waters\\02 - Animal Collective - Man Of Oil.mp3"
+            os.startfile(codePath)
