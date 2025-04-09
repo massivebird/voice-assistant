@@ -81,8 +81,5 @@ if __name__=="__main__" :
         if "open github" in query:
             webbrowser.open("https://github.com")
 
-        if "play animal collective" in query:
-            play_artist("Animal Collective")
-
-        if "play blur" in query:
-            play_artist("Blur")
+        if "play" in query:
+            play_artist(cut_off_at("play", query))
