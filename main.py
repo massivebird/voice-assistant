@@ -1,5 +1,6 @@
 import pyttsx3
 import speech_recognition as sr
+import webbrowser
 
 # https://medium.com/analytics-vidhya/a-guide-to-your-own-a-i-voice-assistant-using-python-17f79c94704
 
@@ -18,7 +19,6 @@ def takeCommand():
             try:
                 print("Recognizing...")    
                 query = r.recognize_google(audio, language='en-in')
-                print(f"User said: {query}\n")  #User query will be printed.
             except Exception as e:
                 print("Nothing said.")
                 continue
@@ -28,7 +28,31 @@ def speak(words):
     engine.say(words)
     engine.runAndWait()
 
+# Returns all chars in the haystack that appear after
+# the needle substring.
+def cut_off_at(needle, haystack):
+    needle_len = len(needle)
+    needle_loc = haystack.find(needle)
+    return haystack[needle_loc + needle_len + 1:]
+
 if __name__=="__main__" :
     while True:
         query = takeCommand().lower()
-        speak(query)
+        print(f"User said: {query}\n")  #User query will be printed.
+
+        if "computer" not in query:
+            continue
+        
+        # User has issued a command.
+
+        if "repeat" in query:
+            speak(cut_off_at("repeat", query))
+
+        if "open youtube" in query:
+            webbrowser.open("https://youtube.com")
+
+        if "open twitter" in query:
+            webbrowser.open("https://twitter.com/eskayOW")
+
+        if "open github" in query:
+            webbrowser.open("https://github.com")
