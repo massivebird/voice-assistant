@@ -72,14 +72,14 @@ if __name__=="__main__" :
         if "repeat" in query:
             speak(cut_off_at("repeat", query))
 
-        if "open youtube" in query:
+        elif "open youtube" in query:
             webbrowser.open("https://youtube.com")
 
-        if "open twitter" in query:
+        elif "open twitter" in query:
             webbrowser.open("https://twitter.com/eskayOW")
 
-        if "open github" in query:
+        elif "open github" in query:
             webbrowser.open("https://github.com")
 
-        if "play" in query:
+        elif "play" in query:
             play_artist(cut_off_at("play", query))
