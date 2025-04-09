@@ -1,6 +1,8 @@
 import pyttsx3
 import speech_recognition as sr
 
+# https://medium.com/analytics-vidhya/a-guide-to-your-own-a-i-voice-assistant-using-python-17f79c94704
+
 engine = pyttsx3.init("sapi5")
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)  # 0-male voice , 1-female voice
