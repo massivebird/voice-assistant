@@ -30,7 +30,7 @@ def take_command():
 
             return query
 
-# The AI speaks some words.
+# The text-to-speech speaks some words.
 def speak(words):
     engine.say(words)
     engine.runAndWait()
