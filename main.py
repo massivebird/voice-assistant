@@ -23,7 +23,7 @@ engine.setProperty('voice', voices[1].id)  # 0-male voice , 1-female voice
 keyboard = Controller()
 
 # Listen for voice activity. Return spoken words as a string.
-def take_command():
+def take_command() -> str:
     r = sr.Recognizer()
 
     while True:
@@ -48,15 +48,19 @@ def speak(words):
 
 # Returns all chars in the haystack that appear after
 # the needle substring.
-def cut_off_at(needle, haystack):
-    needle_len = len(needle)
-    needle_loc = haystack.find(needle)
+def cut_off_at(needle: str, haystack: str) -> str:
+    needle_len: int = len(needle)
+    needle_loc: int = haystack.find(needle)
     return haystack[needle_loc + needle_len + 1:]
 
 # Plays a random song by an artist.
-def play_artist(artist):
+def play_artist(artist: str):
     music_dir = Path("D:\\music")
     artist_dir = music_dir / artist
+
+    if not artist_dir.exists():
+        speak(f"I can't find artist called {artist}.")
+        return
 
     # Compile list of albums.
     albums = [x for x in artist_dir.iterdir()]
@@ -82,7 +86,7 @@ def any_in(needles: [str], haystack: str) -> bool:
 if __name__=="__main__" :
     while True:
         query = take_command().lower()
-        print(f"User said: {query}\n")  #User query will be printed.
+        print(f"User said: {query}\n")
 
         if "computer" not in query:
             continue
@@ -106,3 +110,12 @@ if __name__=="__main__" :
 
         elif any_in(["pause", "resume"], query):
             keyboard.press(Key.media_play_pause)
+
+        elif "track" in query and any_in(["skip", "next"], query):
+            keyboard.press(Key.media_next)
+
+        elif "go back" in query or "track" in query and any_in(["last", "previous"], query):
+            keyboard.press(Key.media_previous)
+
+        elif "ping" in query:
+            speak("pong")
