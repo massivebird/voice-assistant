@@ -3,13 +3,24 @@ import speech_recognition as sr
 import webbrowser
 import os
 import random
+import platform
+from pynput.keyboard import Key, Controller
 from pathlib import Path
 
 # https://medium.com/analytics-vidhya/a-guide-to-your-own-a-i-voice-assistant-using-python-17f79c94704
 
-engine = pyttsx3.init("sapi5")
+system: str = platform.system()
+
+if system == "Windows":
+    engine = pyttsx3.init("sapi5")
+else:
+    engine = pyttsx3.init("espeak")
+
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)  # 0-male voice , 1-female voice
+
+# Used to issue media controls to OS.
+keyboard = Controller()
 
 # Listen for voice activity. Return spoken words as a string.
 def take_command():
@@ -44,7 +55,7 @@ def cut_off_at(needle, haystack):
 
 # Plays a random song by an artist.
 def play_artist(artist):
-    music_dir = Path("D:\music")
+    music_dir = Path("D:\\music")
     artist_dir = music_dir / artist
 
     # Compile list of albums.
@@ -62,6 +73,10 @@ def play_artist(artist):
 
     # Play the song.
     os.startfile(choice)
+
+
+def any_in(needles: [str], haystack: str) -> bool:
+    return any(substr in haystack for substr in needles)
 
 
 if __name__=="__main__" :
@@ -88,3 +103,6 @@ if __name__=="__main__" :
 
         elif "play" in query:
             play_artist(cut_off_at("play", query))
+
+        elif any_in(["pause", "resume"], query):
+            keyboard.press(Key.media_play_pause)
